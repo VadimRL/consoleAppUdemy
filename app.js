@@ -25,8 +25,6 @@
 
 Проверить, чтобы все работало без ошибок в консоли */
 
-
-
 /**
  * Урок 24. Практика ч2
  */
@@ -45,43 +43,63 @@
 
 4) Потренироваться и переписать цикл еще двумя способами*/
 
+/**
+ * 29. Практика , ч3. Используем функции
+ */
+
+/* Задание на урок:
+
+1) Первую часть задания повторить по уроку
+
+2) Создать функцию showMyDB, которая будет проверять свойство privat. Если стоит в позиции
+false - выводит в консоль главный объект программы
+
+3) Создать функцию writeYourGenres в которой пользователь будет 3 раза отвечать на вопрос 
+"Ваш любимый жанр под номером ${номер по порядку}". Каждый ответ записывается в массив данных
+genres
+
+P.S. Функции вызывать не обязательно*/
+
 "use strict";
 
 let numberOfFilms;
 
-do {
-    numberOfFilms = prompt("How many movies have you seen?", "0");
+function start() {
+    do {
+        numberOfFilms = prompt("How many movies have you seen?", "0");
+    } while (numberOfFilms === null || numberOfFilms.trim() === "" || isNaN(numberOfFilms));
 }
-while ( numberOfFilms === null || numberOfFilms.trim() === "" || isNaN(numberOfFilms) );
+
 
 const personalMovieDB = {
-	count: numberOfFilms,
-	movies: {},
-	actors: {},
-	genres: [],
-	privat: false
+    count: numberOfFilms,
+    movies: {},
+    actors: {},
+    genres: [],
+    privat: false,
 };
 
-for (let i = 0; i < 2; i++) {
-    alert("Iteration " + i);
-	const lastMovie = prompt("What is the last movie you have seen?", "");
-	const lastMovieRate = prompt("How much would you rate it?", "");
+function rememberMyFilms() {
+    for (let i = 0; i < 2; i++) {
+        // alert("Iteration " + i);
+        const lastMovie = prompt("What is the last movie you have seen?", "");
+        const lastMovieRate = prompt("How much would you rate it?", "");
 
+        if (
+            lastMovie === null ||
+            lastMovieRate === null ||
+            lastMovie.trim() === "" ||
+            lastMovieRate.trim() === "" ||
+            lastMovie.trim().length > 50 ||
+            isNaN(lastMovieRate)
+        ) {
+            alert("Error: missing data");
+            i--;
+            continue;
+        }
 
-	if (
-		lastMovie === null 
-        || lastMovieRate === null 
-        || lastMovie.trim() === "" 
-        || lastMovieRate.trim() === "" 
-        || lastMovie.trim().length > 50 
-        || isNaN(lastMovieRate)
-	) {
-        alert("Error: missing data");
-        i--;
-        continue;
-	}
-
-	personalMovieDB.movies[lastMovie] = lastMovieRate;
+        personalMovieDB.movies[lastMovie] = lastMovieRate;
+    }
 }
 
 // |----------------------------------------------------------------------------------------------------------|
@@ -99,11 +117,11 @@ for (let i = 0; i < 2; i++) {
 // 	const lastMovieRate = prompt("How much would you rate it?", "");
 
 //     if (
-//         lastMovie === null 
-//         || lastMovieRate === null 
-//         || lastMovie.trim() === "" 
-//         || lastMovieRate.trim() === "" 
-//         || lastMovie.trim().length > 50 
+//         lastMovie === null
+//         || lastMovieRate === null
+//         || lastMovie.trim() === ""
+//         || lastMovieRate.trim() === ""
+//         || lastMovie.trim().length > 50
 //         || isNaN(lastMovieRate)
 //     ) {
 //         alert("Error: missing data");
@@ -118,7 +136,6 @@ for (let i = 0; i < 2; i++) {
  * Cycle do-while
  */
 
-
 // let i = 0;
 
 // do {
@@ -127,11 +144,11 @@ for (let i = 0; i < 2; i++) {
 // 	const lastMovieRate = prompt("How much would you rate it?", "");
 
 //     if (
-//         lastMovie === null 
-//         || lastMovieRate === null 
-//         || lastMovie.trim() === "" 
-//         || lastMovieRate.trim() === "" 
-//         || lastMovie.trim().length > 50 
+//         lastMovie === null
+//         || lastMovieRate === null
+//         || lastMovie.trim() === ""
+//         || lastMovieRate.trim() === ""
+//         || lastMovie.trim().length > 50
 //         || isNaN(lastMovieRate)
 //     ) {
 //         alert("Error: missing data");
@@ -144,15 +161,38 @@ for (let i = 0; i < 2; i++) {
 // while (i < 2);
 
 
-if (personalMovieDB.count < 10) {
-    alert("You have watched very few movies");
-} else if (personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
-    alert("You are a classic movie watcher");
-} else if (personalMovieDB.count >= 30) {
-    alert("You are a movie buff");
-} else {
-    alert("We have got an error");
+function writeYourGenres (obj) {
+    for (let i = 0; i < 3; i++) {
+        alert("Iteration " + i);
+        const genre = prompt("Write you favorite genre at number " + (i + 1), "");
+
+        if (genre === null || genre.trim() === "" || isFinite(genre) || genre.trim().length > 50) {
+            alert("Error: wrong data. Check your input data and try again");
+            i--;
+            continue;
+        }
+
+        obj.genres.push(genre);
+    }
+
 }
 
-console.log(Object.entries(personalMovieDB.movies));
+// writeYourGenres(personalMovieDB);
 
+function detectPersonalLevel (obj) {
+    if (obj.count < 10) {
+        alert("You have watched very few movies");
+    } else if (obj.count >= 10 && obj.count < 30) {
+        alert("You are a classic movie watcher");
+    } else if (obj.count >= 30) {
+        alert("You are a movie buff");
+    } else {
+        alert("We have got an error");
+    }
+}
+personalMovieDB.privat = true;
+function showMyDB (obj) {
+    obj.privat || console.log(obj);
+}
+
+showMyDB(personalMovieDB);
